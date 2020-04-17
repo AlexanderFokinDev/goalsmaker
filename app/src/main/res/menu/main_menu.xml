@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mainmenu_action_settings"
+        android:orderInCategory="1"
+        android:title="@string/menu_item_settings"
+        android:icon="@drawable/baseline_settings_white_24"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/mainmenu_action_exit"
+        android:orderInCategory="2"
+        android:title="@string/menu_item_exit"
+        android:icon="@drawable/baseline_exit_to_app_white_24"
+        app:showAsAction="ifRoom"/>
+
+</menu>
