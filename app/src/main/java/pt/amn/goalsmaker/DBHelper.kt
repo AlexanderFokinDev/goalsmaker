@@ -1,10 +1,15 @@
 package pt.amn.goalsmaker
 
+import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
+import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import android.widget.Toast
 
-private class DBHelper (context : Context)
+class DBHelper (context : Context)
     : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -18,19 +23,74 @@ private class DBHelper (context : Context)
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
     }
 
-    /*
-    fun addTask(tasks: Tasks): Boolean {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(NAME, tasks.name)
-        values.put(DESC, tasks.desc)
-        values.put(COMPLETED, tasks.completed)
-        val _success = db.insert(TABLE_NAME, null, values)
-        db.close()
-        Log.v("InsertedId", "$_success")
-        return (Integer.parseInt("$_success") != -1)
+    fun getAllBigGoals() : List<BigGoalModel> {
+
+        var bigGoalsList = ArrayList<BigGoalModel>()
+
+        try {
+
+            val database = readableDatabase
+            val cursor = database.query(TABLE_BIG_GOALS,
+                null, null, null, null, null, null)
+
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    val indexId = cursor.getColumnIndex(COLUMN_KEY_ID)
+                    val indexTitle = cursor.getColumnIndex(COLUMN_TITLE)
+                    val indexDescription = cursor.getColumnIndex(COLUMN_DESCRIPTION)
+                    do {
+                        val goal = BigGoalModel()
+                        goal.id = cursor.getInt(indexId)
+                        goal.title = cursor.getString(indexTitle)
+                        goal.description = cursor.getString(indexDescription)
+                        bigGoalsList.add(goal)
+
+                    } while (cursor.moveToNext())
+                }
+                cursor.close()
+                database.close()
+            }
+
+        } catch (e : SQLException) {
+            e.printStackTrace()
+        }
+
+        return bigGoalsList;
+
     }
 
+    fun addBigGoal(goal : BigGoalModel) : Boolean {
+
+        try {
+            val database = writableDatabase
+            val values = ContentValues()
+            values.put(COLUMN_TITLE, goal.title)
+            values.put(COLUMN_DESCRIPTION, goal.description)
+            val success = database.insert(TABLE_BIG_GOALS, null, values)
+            database.close()
+            return (success.toInt() != -1)
+        } catch (e : SQLException) {
+            e.printStackTrace()
+        }
+
+        return false
+    }
+
+    fun deleteAllBigGoals() : Boolean {
+
+        try {
+            val database = writableDatabase
+            val success = database.delete(TABLE_BIG_GOALS, null, null)
+            database.close()
+            return (success.toInt() != -1)
+        } catch (e : SQLException) {
+            e.printStackTrace()
+        }
+
+        return false
+    }
+
+    /*
     fun getTask(_id: Int): Tasks {
         val tasks = Tasks()
         val db = writableDatabase
@@ -44,27 +104,6 @@ private class DBHelper (context : Context)
         tasks.completed = cursor.getString(cursor.getColumnIndex(COMPLETED))
         cursor.close()
         return tasks
-    }
-
-    fun task(): List<Tasks> {
-        val taskList = ArrayList<Tasks>()
-        val db = writableDatabase
-        val selectQuery = "SELECT  * FROM $TABLE_NAME"
-        val cursor = db.rawQuery(selectQuery, null)
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    val tasks = Tasks()
-                    tasks.id = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ID)))
-                    tasks.name = cursor.getString(cursor.getColumnIndex(NAME))
-                    tasks.desc = cursor.getString(cursor.getColumnIndex(DESC))
-                    tasks.completed = cursor.getString(cursor.getColumnIndex(COMPLETED))
-                    taskList.add(tasks)
-                } while (cursor.moveToNext())
-            }
-        }
-        cursor.close()
-        return taskList
     }
 
     fun updateTask(tasks: Tasks): Boolean {
@@ -81,13 +120,6 @@ private class DBHelper (context : Context)
     fun deleteTask(_id: Int): Boolean {
         val db = this.writableDatabase
         val _success = db.delete(TABLE_NAME, ID + "=?", arrayOf(_id.toString())).toLong()
-        db.close()
-        return Integer.parseInt("$_success") != -1
-    }
-
-    fun deleteAllTasks(): Boolean {
-        val db = this.writableDatabase
-        val _success = db.delete(TABLE_NAME, null, null).toLong()
         db.close()
         return Integer.parseInt("$_success") != -1
     }

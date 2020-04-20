@@ -51,4 +51,8 @@ class SQLBigGoalsAdapter (list : List<BigGoalModel>)
 
     }
 
+     fun setItems(list : List<BigGoalModel>) {
+         mAllBigGoals = list
+     }
+
 }
