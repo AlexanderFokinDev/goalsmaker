@@ -1,7 +1,9 @@
 package pt.amn.goalsmaker
 
-class BigGoalModel {
-    var id : Int = 0
-    var title : String = ""
-    var description : String = ""
+import java.io.Serializable
+
+class BigGoalModel : Serializable {
+    var id : Int? = 0
+    var title : String? = ""
+    var description : String? = ""
 }

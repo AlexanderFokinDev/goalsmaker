@@ -1,5 +1,6 @@
 package pt.amn.goalsmaker
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -11,13 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener
+    , SQLBigGoalsAdapter.SQLBigGoalsAdapterCallback {
 
     //private val rvBigGoals : RecyclerView  = findViewById(R.id.rv_big_goals);
 
-    private var mBigGoalsList = listOf<BigGoalModel>()
     private val dbHelper = DBHelper(this)
-    private var adapter = SQLBigGoalsAdapter(mBigGoalsList)
+    private var mBigGoalsList = listOf<BigGoalModel>()
+    private var adapter = SQLBigGoalsAdapter(mBigGoalsList, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +36,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setSupportActionBar(toolbar)
         val actionBar = supportActionBar
         //actionBar?.setDisplayHomeAsUpEnabled(true)
-        title = "Big goals"
 
         val mFabButton : FloatingActionButton = findViewById(R.id.fab_big_goals)
         mFabButton.setOnClickListener(this)
@@ -59,8 +60,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         //dbHelper.addBigGoal(testBigGoal)
         //dbHelper.addBigGoal(testBigGoal1)
         //val mBigGoalsList = dbHelper.getAllBigGoals()
-        mBigGoalsList = dbHelper.getAllBigGoals()
-        adapter = SQLBigGoalsAdapter(mBigGoalsList)
 
         //////////////////////
 
@@ -70,6 +69,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         rvBigGoals.layoutManager = LinearLayoutManager(this
                                 , LinearLayoutManager.VERTICAL, false)
         rvBigGoals.adapter = adapter
+
+        refreshRecyclerView()
 
     }
 
@@ -88,7 +89,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             finish()
         }
         else if (id == R.id.mainmenu_action_settings) {
-            // TODO: Click settings
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+            //finish()
         }
 
         return super.onOptionsItemSelected(item)
@@ -105,14 +108,27 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             //dbHelper.deleteAllBigGoals()
 
             dbHelper.addBigGoal(goal)
-            mBigGoalsList = dbHelper.getAllBigGoals()
-            adapter.setItems(mBigGoalsList)
-            adapter.notifyDataSetChanged()
+            refreshRecyclerView()
 
             Toast.makeText(this, "Add big goal " + goal.title, Toast.LENGTH_LONG)
                 .show()
         }
 
+    }
+
+    fun refreshRecyclerView() {
+        mBigGoalsList = dbHelper.getAllBigGoals()
+        adapter.setItems(mBigGoalsList)
+        adapter.notifyDataSetChanged()
+    }
+
+    override fun onBigGoalClick(pos: Int) {
+        var goal = mBigGoalsList.get(pos)
+
+        val intent = Intent(this, BigGoalActivity::class.java)
+        intent.putExtra(BigGoalActivity.EXTRA_PARAM_GOAL, goal)
+        startActivity(intent)
+        //finish()
     }
 
 }

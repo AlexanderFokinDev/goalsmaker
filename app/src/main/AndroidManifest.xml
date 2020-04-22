@@ -9,8 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".StartActivity" android:theme="@style/SplashTheme">
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_settings_activity"
+            android:parentActivityName=".MainActivity" ></activity>
+        <activity
+            android:name=".BigGoalActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".MainActivity"
+            android:label="@string/title_main_activity"/>
+        <activity
+            android:name=".StartActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

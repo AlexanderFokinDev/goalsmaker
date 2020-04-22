@@ -3,24 +3,33 @@ package pt.amn.goalsmaker
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class SQLBigGoalsAdapter (list : List<BigGoalModel>)
+class SQLBigGoalsAdapter (private var mAllBigGoals : List<BigGoalModel>
+                          , val listener : SQLBigGoalsAdapterCallback)
     : RecyclerView.Adapter<SQLBigGoalsAdapter.BigGoalsViewHolder> ()
      {
 
-    private var mAllBigGoals : List<BigGoalModel> = list
+    interface SQLBigGoalsAdapterCallback {
+        fun onBigGoalClick(pos : Int)
+    }
+
+    //private var listener : SQLBigGoalsAdapterCallback
+    //private var mAllBigGoals : List<BigGoalModel> = list
+    //private val listener  = listener
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    class BigGoalsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class BigGoalsViewHolder(itemView: View, val listener : SQLBigGoalsAdapterCallback)
+        : RecyclerView.ViewHolder(itemView) {
 
-        val tvTitle = itemView.findViewById<TextView>(R.id.row_big_goal_tv_title)
-        val tvDescription = itemView.findViewById<TextView>(R.id.row_big_goal_tv_description)
+        val tvTitle : TextView = itemView.findViewById(R.id.row_big_goal_tv_title)
+        val tvDescription : TextView = itemView.findViewById(R.id.row_big_goal_tv_description)
         //cbVisitedCountry = (CheckBox) itemView.findViewById(R.id.country_row_check);
-        //ivFlag = (ImageView) itemView.findViewById(R.id.country_row_iv_flag);
+        val ivGoal : ImageView = itemView.findViewById(R.id.row_big_goal_iv)
 
     }
 
@@ -30,7 +39,7 @@ class SQLBigGoalsAdapter (list : List<BigGoalModel>)
         val v : View = LayoutInflater.from(parent.context)
             .inflate(R.layout.row_big_goal, parent, false)
 
-        return BigGoalsViewHolder(v)
+        return BigGoalsViewHolder(v, listener)
 
     }
 
@@ -44,6 +53,10 @@ class SQLBigGoalsAdapter (list : List<BigGoalModel>)
 
         holder.tvTitle.text = bigGoal.title
         holder.tvDescription.text = bigGoal.description
+
+        holder.ivGoal.setOnClickListener(View.OnClickListener {
+            listener.onBigGoalClick(position)
+        })
 
         /*countriesViewHolder.tvCountry.setText(country.getLocalCountryName());
         countriesViewHolder.cbVisitedCountry.setChecked(country.visited);
