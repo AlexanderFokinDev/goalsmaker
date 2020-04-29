@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Build.ID
 import android.util.Log
 import android.widget.Toast
 
@@ -90,6 +91,24 @@ class DBHelper (context : Context)
         return false
     }
 
+    fun updateBigGoal(goal : BigGoalModel): Boolean {
+
+        try {
+            val database = writableDatabase
+            val values = ContentValues()
+            values.put(COLUMN_TITLE, goal.title)
+            values.put(COLUMN_DESCRIPTION, goal.description)
+            val success = database.update(TABLE_BIG_GOALS, values,
+                COLUMN_KEY_ID + "=?", arrayOf(goal.id.toString()))
+            database.close()
+            return (success.toInt() != -1)
+        } catch (e : SQLException) {
+            e.printStackTrace()
+        }
+
+        return false
+    }
+
     /*
     fun getTask(_id: Int): Tasks {
         val tasks = Tasks()
@@ -104,17 +123,6 @@ class DBHelper (context : Context)
         tasks.completed = cursor.getString(cursor.getColumnIndex(COMPLETED))
         cursor.close()
         return tasks
-    }
-
-    fun updateTask(tasks: Tasks): Boolean {
-        val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(NAME, tasks.name)
-        values.put(DESC, tasks.desc)
-        values.put(COMPLETED, tasks.completed)
-        val _success = db.update(TABLE_NAME, values, ID + "=?", arrayOf(tasks.id.toString())).toLong()
-        db.close()
-        return Integer.parseInt("$_success") != -1
     }
 
     fun deleteTask(_id: Int): Boolean {

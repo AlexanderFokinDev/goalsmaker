@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
 
     private val dbHelper = DBHelper(this)
     private var mBigGoalsList = listOf<BigGoalModel>()
-    private var adapter = SQLBigGoalsAdapter(mBigGoalsList, this)
+    private var adapter = SQLBigGoalsAdapter(mBigGoalsList, this, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

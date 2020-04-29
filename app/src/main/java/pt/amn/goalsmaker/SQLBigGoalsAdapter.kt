@@ -1,14 +1,17 @@
 package pt.amn.goalsmaker
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class SQLBigGoalsAdapter (private var mAllBigGoals : List<BigGoalModel>
-                          , val listener : SQLBigGoalsAdapterCallback)
+                          , val listener : SQLBigGoalsAdapterCallback,
+                          val context: Context)
     : RecyclerView.Adapter<SQLBigGoalsAdapter.BigGoalsViewHolder> ()
      {
 
@@ -57,6 +60,11 @@ class SQLBigGoalsAdapter (private var mAllBigGoals : List<BigGoalModel>
         holder.ivGoal.setOnClickListener(View.OnClickListener {
             listener.onBigGoalClick(position)
         })
+
+        val imageFile = Utils(context.applicationContext)
+            .getImagePathFromInternalStorage(bigGoal.id.toString())
+        if (imageFile.exists())
+            Glide.with(context).load(imageFile).into(holder.ivGoal)
 
         /*countriesViewHolder.tvCountry.setText(country.getLocalCountryName());
         countriesViewHolder.cbVisitedCountry.setChecked(country.visited);
