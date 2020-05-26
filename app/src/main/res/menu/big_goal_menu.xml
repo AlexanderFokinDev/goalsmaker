@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/big_goal_menu_action_edit"
+        android:orderInCategory="1"
+        android:title="@string/menu_item_edit"
+        android:icon="@drawable/baseline_edit_white_24"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/big_goal_menu_action_delete"
+        android:orderInCategory="2"
+        android:title="@string/menu_item_delete"
+        android:icon="@drawable/baseline_delete_white_24"
+        app:showAsAction="ifRoom"/>
+
+</menu>

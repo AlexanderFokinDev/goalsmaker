@@ -18,10 +18,26 @@ class DBHelper (context : Context)
         db?.execSQL("CREATE TABLE " + TABLE_BIG_GOALS + "(" + COLUMN_KEY_ID
                 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_TITLE + " TEXT,"
-                + COLUMN_DESCRIPTION + " TEXT)")
+                + COLUMN_DESCRIPTION + " TEXT,"
+                + COLUMN_IMAGE_PATH + " TEXT)")
+
+        db?.execSQL("CREATE TABLE " + TABLE_GOAL_INDICATORS + "(" + COLUMN_KEY_ID
+                + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + COLUMN_DESCRIPTION + " TEXT,"
+                + COLUMN_DONE + " TINYINT)")
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+
+        if (oldVersion == 1) {
+            db?.execSQL("CREATE TABLE " + TABLE_GOAL_INDICATORS + "(" + COLUMN_KEY_ID
+                    + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_DESCRIPTION + " TEXT,"
+                    + COLUMN_DONE + " TINYINT)")
+            /*db?.execSQL("ALTER TABLE " + TABLE_BIG_GOALS + " ADD "
+                    + COLUMN_IMAGE_PATH + " TEXT");*/
+        }
     }
 
     fun getAllBigGoals() : List<BigGoalModel> {
@@ -39,11 +55,13 @@ class DBHelper (context : Context)
                     val indexId = cursor.getColumnIndex(COLUMN_KEY_ID)
                     val indexTitle = cursor.getColumnIndex(COLUMN_TITLE)
                     val indexDescription = cursor.getColumnIndex(COLUMN_DESCRIPTION)
+                    val indexImagePath = cursor.getColumnIndex(COLUMN_IMAGE_PATH)
                     do {
                         val goal = BigGoalModel()
                         goal.id = cursor.getInt(indexId)
                         goal.title = cursor.getString(indexTitle)
                         goal.description = cursor.getString(indexDescription)
+                        goal.imagePath = cursor.getString(indexImagePath)
                         bigGoalsList.add(goal)
 
                     } while (cursor.moveToNext())
@@ -67,7 +85,25 @@ class DBHelper (context : Context)
             val values = ContentValues()
             values.put(COLUMN_TITLE, goal.title)
             values.put(COLUMN_DESCRIPTION, goal.description)
+            values.put(COLUMN_IMAGE_PATH, goal.imagePath)
             val success = database.insert(TABLE_BIG_GOALS, null, values)
+            database.close()
+            return (success.toInt() != -1)
+        } catch (e : SQLException) {
+            e.printStackTrace()
+        }
+
+        return false
+    }
+
+    fun deleteBigGoal(goal : BigGoalModel) : Boolean {
+
+        try {
+            val database = writableDatabase
+            val success = database.delete(TABLE_BIG_GOALS,
+                COLUMN_KEY_ID + "=?",
+                arrayOf(goal.id.toString()))
+
             database.close()
             return (success.toInt() != -1)
         } catch (e : SQLException) {
@@ -98,6 +134,7 @@ class DBHelper (context : Context)
             val values = ContentValues()
             values.put(COLUMN_TITLE, goal.title)
             values.put(COLUMN_DESCRIPTION, goal.description)
+            values.put(COLUMN_IMAGE_PATH, goal.imagePath)
             val success = database.update(TABLE_BIG_GOALS, values,
                 COLUMN_KEY_ID + "=?", arrayOf(goal.id.toString()))
             database.close()
@@ -135,12 +172,17 @@ class DBHelper (context : Context)
 
     companion object {
         // By changing the version number, DBHelper will understand that you need to update the database structure.
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         private const val DATABASE_NAME = "goalsDB"
-        private const val TABLE_BIG_GOALS = "big_goals"
         private const val TAG = "DBHelper"
+
+        private const val TABLE_BIG_GOALS = "big_goals"
+        private const val TABLE_GOAL_INDICATORS = "goal_indicators"
+
         private const val COLUMN_KEY_ID = "_id"
         private const val COLUMN_TITLE = "title"
         private const val COLUMN_DESCRIPTION = "description"
+        private const val COLUMN_IMAGE_PATH = "image_path"
+        private const val COLUMN_DONE = "done"
     }
 }

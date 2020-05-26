@@ -9,11 +9,14 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 import android.graphics.BitmapFactory
+import android.util.Log
 
 
 class Utils(val context : Context) {
 
     fun saveImageToInternalStorage(selectedImage : Uri?, fileName : String) {
+
+        val nameInStorage = "${fileName}.jpg"
 
         // Get the bitmap from drawable object
         val bitmap = uriToBitmap(selectedImage!!)
@@ -27,7 +30,7 @@ class Utils(val context : Context) {
 
         // Create a file to save the image
         //val image : File = File(selectedImage?.path)
-        imageFile = File(imageFile, "big_goal_${fileName}.jpg")
+        imageFile = File(imageFile, nameInStorage)
 
         try {
             // Get the file output stream
@@ -58,9 +61,28 @@ class Utils(val context : Context) {
         // The bellow line return a directory in internal storage
         var imageFile = wrapper.getDir("images", Context.MODE_PRIVATE)
 
-        imageFile = File(imageFile, "big_goal_${fileName}.jpg")
+        imageFile = File(imageFile, "${fileName}.jpg")
 
         return imageFile
+
+    }
+
+    fun deleteImagesByNameFromInternalStorage(fileName : String) : Boolean  {
+
+        val nameInStorage = "big_goal_${fileName}.jpg"
+
+        // Get the context wrapper instance
+        val wrapper = ContextWrapper(context)
+
+        // Initializing a new file
+        // The bellow line return a directory in internal storage
+        val imageFile = wrapper.getDir("images", Context.MODE_PRIVATE)
+
+        for (file in imageFile.listFiles().filter { it.name == nameInStorage }) {
+            file.delete()
+        }
+
+        return true
 
     }
 

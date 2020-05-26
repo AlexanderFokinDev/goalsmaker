@@ -29,6 +29,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
         initializationRecyclerView()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        refreshRecyclerView()
+
+    }
+
     private fun initializationView() {
 
         // Action bar
@@ -70,8 +77,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
                                 , LinearLayoutManager.VERTICAL, false)
         rvBigGoals.adapter = adapter
 
-        refreshRecyclerView()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -100,18 +105,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
     override fun onClick(v: View?) {
 
         if (v?.id == R.id.fab_big_goals) {
-            val testString = "Daily plan\t\t\t\t\t73%\nWeekly plan\t\t\t\t20%\nMontly plan\t\t\t\t84%"
-            val goal = BigGoalModel()
-            goal.title = "Test_" + (mBigGoalsList.size + 1).toString()
-            goal.description = testString
-
-            //dbHelper.deleteAllBigGoals()
-
-            dbHelper.addBigGoal(goal)
-            refreshRecyclerView()
-
-            Toast.makeText(this, "Add big goal " + goal.title, Toast.LENGTH_LONG)
-                .show()
+            val intent = Intent(this, BigGoalActivity::class.java)
+            startActivity(intent)
         }
 
     }

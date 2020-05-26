@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class SQLBigGoalsAdapter (private var mAllBigGoals : List<BigGoalModel>
                           , val listener : SQLBigGoalsAdapterCallback,
@@ -62,9 +63,13 @@ class SQLBigGoalsAdapter (private var mAllBigGoals : List<BigGoalModel>
         })
 
         val imageFile = Utils(context.applicationContext)
-            .getImagePathFromInternalStorage(bigGoal.id.toString())
+            .getImagePathFromInternalStorage(bigGoal.imagePath)
         if (imageFile.exists())
-            Glide.with(context).load(imageFile).into(holder.ivGoal)
+            Glide.with(context)
+                .load(imageFile)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(holder.ivGoal)
 
         /*countriesViewHolder.tvCountry.setText(country.getLocalCountryName());
         countriesViewHolder.cbVisitedCountry.setChecked(country.visited);
