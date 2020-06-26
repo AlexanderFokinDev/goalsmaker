@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/roboto"
+        android:hint="@string/hint_title"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/ivGoal"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/empty_goal"
+        android:layout_below="@id/etTitle"/>
+
+    <EditText
+        android:id="@+id/etDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivGoal"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/roboto"
+        android:hint="@string/hint_description"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvTitleIndicators"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etDescription"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/goal_indicators"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvIndicators"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTitleIndicators"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/group_empty_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rvIndicators">
+
+            <EditText
+                android:id="@+id/etIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fadingEdge="none"
+                android:fontFamily="@font/roboto"
+                android:gravity="start"
+                android:layout_toStartOf="@id/btAddIndicator"
+                android:paddingStart="10dp"
+                android:paddingEnd="30dp"
+                android:text=""
+                android:hint="@string/hint_new_indicator"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btAddIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="10dp"
+                android:background="#00FFFFFF"
+                android:src="@drawable/baseline_add_box_black_24" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btSave"
+                style="@style/moveOnButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etIndicator"
+                android:gravity="bottom"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                app:icon="@drawable/baseline_save_white_24"
+                android:text="@string/button_save" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

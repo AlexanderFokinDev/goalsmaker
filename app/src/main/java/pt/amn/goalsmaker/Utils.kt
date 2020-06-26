@@ -10,9 +10,10 @@ import java.io.IOException
 import java.io.OutputStream
 import android.graphics.BitmapFactory
 import android.util.Log
+import java.util.*
 
 
-class Utils(val context : Context) {
+class Utils(val context : Context?) {
 
     fun saveImageToInternalStorage(selectedImage : Uri?, fileName : String) {
 
@@ -88,7 +89,7 @@ class Utils(val context : Context) {
 
     private fun uriToBitmap(selectedFileUri: Uri) : Bitmap? {
         try {
-            val parcelFileDescriptor = context.contentResolver.openFileDescriptor(selectedFileUri, "r")
+            val parcelFileDescriptor = context?.contentResolver?.openFileDescriptor(selectedFileUri, "r")
             val fileDescriptor = parcelFileDescriptor?.getFileDescriptor()
             val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
             parcelFileDescriptor?.close()
@@ -103,4 +104,14 @@ class Utils(val context : Context) {
 
     }
 
+    fun getCurrentDayAsLong() : Long {
+        val calendar : Calendar = Calendar.getInstance()
+        calendar.time = Date()
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        return calendar.timeInMillis
+    }
 }

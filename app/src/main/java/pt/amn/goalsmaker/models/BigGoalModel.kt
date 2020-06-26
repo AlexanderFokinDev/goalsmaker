@@ -1,4 +1,4 @@
-package pt.amn.goalsmaker
+package pt.amn.goalsmaker.models
 
 import java.io.Serializable
 

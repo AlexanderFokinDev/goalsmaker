@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/tvTask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fadingEdge="none"
+            android:fontFamily="@font/roboto"
+            android:gravity="start"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text=""
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"/>
+
+        <ImageButton
+            android:id="@+id/btSubtract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTask"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:background="#00FFFFFF"
+            android:src="@drawable/baseline_remove_white_24" />
+
+        <TextView
+            android:id="@+id/tvQuantity"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTask"
+            android:layout_marginHorizontal="10dp"
+            android:layout_toEndOf="@id/btSubtract"
+            android:fadingEdge="none"
+            android:fontFamily="@font/roboto"
+            android:gravity="center_horizontal"
+            android:text=""
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTask"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tvQuantity"
+            android:background="#00FFFFFF"
+            android:src="@drawable/baseline_add_white_24" />
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTask"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="8dp"
+            android:fadingEdge="none"
+            android:fontFamily="@font/roboto"
+            android:gravity="start"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text=""
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

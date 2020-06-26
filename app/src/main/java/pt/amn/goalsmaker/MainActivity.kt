@@ -6,11 +6,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import pt.amn.goalsmaker.adapters.SQLBigGoalsAdapter
+import pt.amn.goalsmaker.models.BigGoalModel
 
 class MainActivity : AppCompatActivity(), View.OnClickListener
     , SQLBigGoalsAdapter.SQLBigGoalsAdapterCallback {
@@ -19,7 +20,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
 
     private val dbHelper = DBHelper(this)
     private var mBigGoalsList = listOf<BigGoalModel>()
-    private var adapter = SQLBigGoalsAdapter(mBigGoalsList, this, this)
+    private var adapter =
+        SQLBigGoalsAdapter(mBigGoalsList, this, this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

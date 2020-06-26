@@ -6,6 +6,10 @@
     <string name="title_main_activity">Big goals</string>
     <string name="title_settings_activity">Settings</string>
     <string name="title_create_new_goal">Create a new goal</string>
+    <string name="title_big_goal">Big goal</string>
+    <string name="title_total">Total points</string>
+    <string name="title_points">Points</string>
+    <string name="title_quantity">Quantity</string>
 
     <string name="goal_indicators">Goal indicators</string>
 
@@ -16,9 +20,23 @@
 
     <string name="hint_description">Description</string>
     <string name="hint_title">Title</string>
+    <string name="hint_new_indicator">New indicator</string>
+    <string name="hint_new_task">New task</string>
+    <string name="hint_point">Points</string>
 
     <string name="button_save">Save</string>
+    <string name="button_add">Add</string>
 
     <string name="dialog_message_delete_goal">Delete the goal?</string>
+
+    <string name="error_message_empty_indicator">Indicator\'s text is empty</string>
+    <string name="error_message_empty_task">Task\'s text is empty</string>
+
+    <string name="info_message_save_goal">Big goal has saved</string>
+
+    <string name="tab_item_big_goal_main">Main</string>
+    <string name="tab_item_big_goal_tasks">Tasks</string>
+    <string name="tab_item_big_goal_done_today">Done today</string>
+
 
 </resources>

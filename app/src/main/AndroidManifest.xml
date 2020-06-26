@@ -15,7 +15,8 @@
             android:parentActivityName=".MainActivity" ></activity>
         <activity
             android:name=".BigGoalActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".MainActivity"
             android:label="@string/title_main_activity"/>
         <activity

@@ -1,66 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BigGoalActivity">
+    tools:context=".BigGoalActivity"
+    android:background="@drawable/gradient_background"
+    >
 
     <include
         layout="@layout/toolbar_main"
         android:id="@+id/toolbar" />
 
-    <EditText
-        android:id="@+id/big_goal_et_title"
-        android:layout_width="wrap_content"
+    <view
+        android:id="@+id/big_goal_tab"
+        class="com.google.android.material.tabs.TabLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/roboto"
-        android:hint="@string/hint_title"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_below="@+id/toolbar"
+        android:background="#00FFFFFF"
+        android:textColor="@color/colorPrimaryDark"
+        app:tabIndicatorColor="@color/colorWhite"
+        app:tabIndicatorHeight="6dp"
+        app:tabSelectedTextColor="@color/colorWhite">
 
-    <ImageView
-        android:id="@+id/big_goal_iv"
-        android:layout_width="256dp"
-        android:layout_height="256dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/empty_goal"
-        android:layout_below="@id/big_goal_et_title"/>
+    </view>
 
-    <EditText
-        android:id="@+id/big_goal_et_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/big_goal_iv"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/roboto"
-        android:hint="@string/hint_description"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/big_goal_tv_title_indicators"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/big_goal_et_description"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/roboto"
-        android:text="@string/goal_indicators"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/big_goal_bt_save"
-        style="@style/moveOnButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/big_goal_tv_title_indicators"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:text="@string/button_save" />
-
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/big_goal_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/big_goal_tab">
+    </androidx.viewpager.widget.ViewPager>
 
 </RelativeLayout>

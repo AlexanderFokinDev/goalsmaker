@@ -1,4 +1,4 @@
-package pt.amn.goalsmaker
+package pt.amn.goalsmaker.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,6 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import pt.amn.goalsmaker.models.BigGoalModel
+import pt.amn.goalsmaker.R
+import pt.amn.goalsmaker.Utils
 
 class SQLBigGoalsAdapter (private var mAllBigGoals : List<BigGoalModel>
                           , val listener : SQLBigGoalsAdapterCallback,
@@ -38,12 +41,15 @@ class SQLBigGoalsAdapter (private var mAllBigGoals : List<BigGoalModel>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
-            : SQLBigGoalsAdapter.BigGoalsViewHolder {
+            : BigGoalsViewHolder {
 
         val v : View = LayoutInflater.from(parent.context)
             .inflate(R.layout.row_big_goal, parent, false)
 
-        return BigGoalsViewHolder(v, listener)
+        return BigGoalsViewHolder(
+            v,
+            listener
+        )
 
     }
 
@@ -51,7 +57,7 @@ class SQLBigGoalsAdapter (private var mAllBigGoals : List<BigGoalModel>
         return mAllBigGoals.count()
     }
 
-    override fun onBindViewHolder(holder: SQLBigGoalsAdapter.BigGoalsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BigGoalsViewHolder, position: Int) {
 
         val bigGoal = mAllBigGoals.get(position)
 
