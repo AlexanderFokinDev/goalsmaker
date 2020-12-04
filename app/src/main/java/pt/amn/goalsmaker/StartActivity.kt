@@ -19,7 +19,7 @@ class StartActivity : AppCompatActivity() {
 
         super.onResume()
 
-        Thread.sleep(1300)
+        Thread.sleep(1000)
 
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
