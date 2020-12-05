@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
     android:clickable="true"
     android:orientation="vertical"
-    android:layout_margin="10dp">
+    android:layout_margin="@dimen/margin_small_3">
 
     <ImageView
-        android:id="@+id/row_big_goal_iv"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:id="@+id/iv_big_goal"
+        android:layout_width="@dimen/image_size_normal_1"
+        android:layout_height="@dimen/image_size_normal_1"
         android:src="@drawable/empty_goal"
-        android:layout_marginStart="10dp"
-        />
+        android:layout_marginStart="@dimen/margin_small_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/row_big_goal_tv_title"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/row_big_goal_iv"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/margin_small_3"
         android:textStyle="bold"
-        android:text="Title"/>
+        tools:text="Title"
+        app:layout_constraintStart_toEndOf="@+id/iv_big_goal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/row_big_goal_tv_description"
+        android:id="@+id/tv_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/row_big_goal_iv"
-        android:layout_below="@+id/row_big_goal_tv_title"
-        android:layout_marginStart="10dp"
-        android:text="description"/>
+        android:layout_below="@+id/tv_title"
+        android:layout_marginStart="@dimen/margin_small_3"
+        tools:text="description"
+        app:layout_constraintStart_toEndOf="@+id/iv_big_goal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_constraintBottom_toBottomOf="@id/iv_big_goal"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

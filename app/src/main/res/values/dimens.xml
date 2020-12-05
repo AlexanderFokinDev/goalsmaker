@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <dimen name="design_fab_image_size" tools:override="true">64dp</dimen>
+    <dimen name="margin_small_1">4dp</dimen>
+    <dimen name="margin_small_2">8dp</dimen>
+    <dimen name="margin_small_3">10dp</dimen>
+    <dimen name="margin_small_4">12dp</dimen>
+    <dimen name="margin_small_5">14dp</dimen>
+    <dimen name="margin_small_6">16dp</dimen>
+
+    <dimen name="image_size_normal_1">128dp</dimen>
+
+    <dimen name="design_fab_image_size">64dp</dimen>
 </resources>
