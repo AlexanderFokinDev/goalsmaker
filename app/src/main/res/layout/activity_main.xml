@@ -7,12 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:background="@drawable/gradient_background"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <include
-        layout="@layout/toolbar_main"
-        android:id="@+id/toolbar" />
+        android:id="@+id/included_toolbar"
+        layout="@layout/toolbar_main"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -22,25 +21,24 @@
             android:id="@+id/rv_big_goals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical">
         </androidx.recyclerview.widget.RecyclerView>
-
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id = "@+id/fab_big_goals"
             style="@style/Widget.Design.FloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/baseline_add_circle_24"
             android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/margin_small_6"
+            android:src="@drawable/baseline_add_circle_24"
             app:layout_anchor="@id/rv_big_goals"
             app:layout_anchorGravity="bottom|end"
             app:backgroundTint="@android:color/white"
             app:tint="@color/colorAccent"
             app:rippleColor="@color/colorPrimaryDark"
-            app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
-            />
+            app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
