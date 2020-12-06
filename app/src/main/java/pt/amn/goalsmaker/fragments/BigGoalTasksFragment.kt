@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_big_goal_tasks.*
-import pt.amn.goalsmaker.DBHelper
+import pt.amn.goalsmaker.helpers.DBHelper
 import pt.amn.goalsmaker.models.BigGoalModel
 import pt.amn.goalsmaker.R
 import pt.amn.goalsmaker.adapters.SQLGoalTasksAdapter

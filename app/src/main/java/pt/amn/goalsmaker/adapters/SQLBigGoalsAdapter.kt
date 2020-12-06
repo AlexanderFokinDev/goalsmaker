@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import pt.amn.goalsmaker.DBHelper
+import pt.amn.goalsmaker.helpers.DBHelper
 import pt.amn.goalsmaker.models.BigGoalModel
 import pt.amn.goalsmaker.Utils
 import pt.amn.goalsmaker.databinding.RowBigGoalBinding
