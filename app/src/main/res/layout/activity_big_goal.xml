@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,31 +8,28 @@
     android:layout_height="match_parent"
     tools:context=".BigGoalActivity"
     android:background="@drawable/gradient_background"
-    >
+    android:orientation="vertical">
 
     <include
-        layout="@layout/toolbar_main"
-        android:id="@+id/toolbar" />
+        android:id="@+id/included_toolbar"
+        layout="@layout/toolbar_main" />
 
-    <view
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/big_goal_tab"
-        class="com.google.android.material.tabs.TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
         android:background="#00FFFFFF"
         android:textColor="@color/colorPrimaryDark"
         app:tabIndicatorColor="@color/colorWhite"
-        app:tabIndicatorHeight="6dp"
+        app:tabIndicatorHeight="@dimen/tab_indicator_height"
         app:tabSelectedTextColor="@color/colorWhite">
 
-    </view>
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/big_goal_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/big_goal_tab">
+        android:layout_height="match_parent">
     </androidx.viewpager.widget.ViewPager>
 
-</RelativeLayout>
+</LinearLayout>

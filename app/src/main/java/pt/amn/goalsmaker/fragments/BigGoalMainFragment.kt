@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.android.synthetic.main.fragment_big_goal_main.*
 import pt.amn.goalsmaker.*
 import pt.amn.goalsmaker.adapters.SQLGoalIndicatorsAdapter
+import pt.amn.goalsmaker.helpers.DBHelper
 import pt.amn.goalsmaker.models.BigGoalModel
 import pt.amn.goalsmaker.models.GoalIndicatorModel
 import java.util.*

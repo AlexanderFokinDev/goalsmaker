@@ -7,15 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_big_goal_done_today.*
-import kotlinx.android.synthetic.main.fragment_big_goal_tasks.*
-import pt.amn.goalsmaker.DBHelper
+import pt.amn.goalsmaker.helpers.DBHelper
 import pt.amn.goalsmaker.models.BigGoalModel
 import pt.amn.goalsmaker.R
 import pt.amn.goalsmaker.Utils
-import pt.amn.goalsmaker.adapters.SQLGoalTasksAdapter
 import pt.amn.goalsmaker.adapters.SQLTasksDoneTodayAdapter
 import pt.amn.goalsmaker.models.CompletedTaskModel
-import pt.amn.goalsmaker.models.TaskModel
 
 class BigGoalDoneTodayFragment(var isNew : Boolean, val goal : BigGoalModel) : Fragment()
     , SQLTasksDoneTodayAdapter.SQLTasksDoneTodayAdapterCallback{
