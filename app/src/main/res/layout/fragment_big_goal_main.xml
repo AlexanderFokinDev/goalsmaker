@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,104 +6,112 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/roboto"
-        android:hint="@string/hint_title"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:hint="@string/hint_title"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/ivGoal"
-        android:layout_width="256dp"
-        android:layout_height="256dp"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/empty_goal"
-        android:layout_below="@id/etTitle"/>
+        <ImageView
+            android:id="@+id/iv_goal"
+            android:layout_width="@dimen/image_size_large_1"
+            android:layout_height="@dimen/image_size_large_1"
+            android:src="@drawable/empty_goal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_title" />
 
-    <EditText
-        android:id="@+id/etDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ivGoal"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/roboto"
-        android:hint="@string/hint_description"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:hint="@string/hint_description"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_goal" />
 
-    <TextView
-        android:id="@+id/tvTitleIndicators"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etDescription"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:fontFamily="@font/roboto"
-        android:text="@string/goal_indicators"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_title_indicators"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_normal_2"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="@string/goal_indicators"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_description" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvIndicators"
-            android:layout_width="match_parent"
+            android:id="@+id/rv_indicators"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/view_height_large_1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_indicators" />
+
+        <EditText
+            android:id="@+id/et_indicator"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTitleIndicators"
-            >
+            android:layout_toStartOf="@id/bt_add_indicator"
+            android:fadingEdge="none"
+            android:fontFamily="@font/roboto"
+            android:gravity="start"
+            android:hint="@string/hint_new_indicator"
+            android:paddingStart="@dimen/padding_small_3"
+            android:paddingEnd="@dimen/padding_normal_4"
+            android:text=""
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/bt_add_indicator"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_indicators"/>
 
-        </androidx.recyclerview.widget.RecyclerView>
+        <ImageButton
+            android:id="@+id/bt_add_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_small_3"
+            android:background="#00FFFFFF"
+            android:src="@drawable/baseline_add_box_black_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_indicator"
+            app:layout_constraintBottom_toBottomOf="@+id/et_indicator"/>
 
-        <RelativeLayout
-            android:id="@+id/group_empty_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/rvIndicators">
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bt_save"
+            style="@style/moveOnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_normal_2"
+            android:gravity="bottom|center"
+            android:text="@string/button_save"
+            app:icon="@drawable/baseline_save_white_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_indicator"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <EditText
-                android:id="@+id/etIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fadingEdge="none"
-                android:fontFamily="@font/roboto"
-                android:gravity="start"
-                android:layout_toStartOf="@id/btAddIndicator"
-                android:paddingStart="10dp"
-                android:paddingEnd="30dp"
-                android:text=""
-                android:hint="@string/hint_new_indicator"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <ImageButton
-                android:id="@+id/btAddIndicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="10dp"
-                android:background="#00FFFFFF"
-                android:src="@drawable/baseline_add_box_black_24" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btSave"
-                style="@style/moveOnButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/etIndicator"
-                android:gravity="bottom"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="20dp"
-                app:icon="@drawable/baseline_save_white_24"
-                android:text="@string/button_save" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

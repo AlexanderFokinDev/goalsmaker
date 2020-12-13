@@ -7,8 +7,26 @@
     <dimen name="margin_small_5">14dp</dimen>
     <dimen name="margin_small_6">16dp</dimen>
 
+    <dimen name="margin_normal_1">18dp</dimen>
+    <dimen name="margin_normal_2">20dp</dimen>
+
+    <dimen name="padding_small_1">4dp</dimen>
+    <dimen name="padding_small_2">8dp</dimen>
+    <dimen name="padding_small_3">10dp</dimen>
+    <dimen name="padding_small_4">12dp</dimen>
+    <dimen name="padding_small_5">14dp</dimen>
+    <dimen name="padding_small_6">16dp</dimen>
+
+    <dimen name="padding_normal_1">18dp</dimen>
+    <dimen name="padding_normal_2">20dp</dimen>
+    <dimen name="padding_normal_3">24dp</dimen>
+    <dimen name="padding_normal_4">30dp</dimen>
+
     <dimen name="image_size_normal_1">128dp</dimen>
+    <dimen name="image_size_large_1">256dp</dimen>
 
     <dimen name="design_fab_image_size">64dp</dimen>
     <dimen name="tab_indicator_height">6dp</dimen>
+
+    <dimen name="view_height_large_1">128dp</dimen>
 </resources>

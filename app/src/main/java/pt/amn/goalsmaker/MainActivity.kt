@@ -23,6 +23,11 @@ class MainActivity : AppCompatActivity(), SQLBigGoalsAdapter.SQLBigGoalsAdapterC
         initializationView()
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateData()
+    }
+
     private fun initializationView() {
 
         binding.run {
@@ -36,7 +41,6 @@ class MainActivity : AppCompatActivity(), SQLBigGoalsAdapter.SQLBigGoalsAdapterC
                 startActivity(Intent(this@MainActivity, BigGoalActivity::class.java))
             }
         }
-        updateData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

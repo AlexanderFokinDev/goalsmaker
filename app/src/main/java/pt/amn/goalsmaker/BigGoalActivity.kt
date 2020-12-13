@@ -68,8 +68,7 @@ class BigGoalActivity : AppCompatActivity() {
         binding.run {
             bigGoalPager.adapter = TabBigGoalPagerFragmentAdapter(
                 this@BigGoalActivity,
-                supportFragmentManager, isNew, goal
-            )
+                supportFragmentManager, isNew, goal)
 
             bigGoalTab.setupWithViewPager(bigGoalPager)
 

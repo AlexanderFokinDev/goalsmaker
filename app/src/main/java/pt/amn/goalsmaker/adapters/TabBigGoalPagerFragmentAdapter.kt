@@ -11,9 +11,8 @@ import pt.amn.goalsmaker.fragments.BigGoalMainFragment
 import pt.amn.goalsmaker.fragments.BigGoalTasksFragment
 
 class TabBigGoalPagerFragmentAdapter(context : Context, fm : FragmentManager
-                                     , private val isNew : Boolean, private val goal : BigGoalModel
-)
-    : FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+                                     , private val isNew : Boolean, private val goal : BigGoalModel)
+    : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val tabs =  if(isNew) listOf(context.getString(R.string.tab_item_big_goal_main)
             , context.getString(R.string.tab_item_big_goal_tasks))
