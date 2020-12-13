@@ -2,23 +2,27 @@ package pt.amn.goalsmaker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
+import pt.amn.goalsmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
 
+    private lateinit var binding : ActivitySettingsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         initializationView()
     }
 
     private fun initializationView() {
 
-        // Action bar
-        val toolbar : Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        val actionBar = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.run {
+            setSupportActionBar(includedToolbar.toolbar)
+        }
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }
