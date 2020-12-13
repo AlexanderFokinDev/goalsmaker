@@ -9,52 +9,56 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import kotlinx.android.synthetic.main.fragment_big_goal_main.*
 import pt.amn.goalsmaker.*
 import pt.amn.goalsmaker.adapters.SQLGoalIndicatorsAdapter
+import pt.amn.goalsmaker.databinding.FragmentBigGoalMainBinding
 import pt.amn.goalsmaker.helpers.DBHelper
+import pt.amn.goalsmaker.helpers.loadImageWithCache
 import pt.amn.goalsmaker.models.BigGoalModel
 import pt.amn.goalsmaker.models.GoalIndicatorModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class BigGoalMainFragment(var isNew : Boolean, val goal : BigGoalModel)
+class BigGoalMainFragment(private var isNew : Boolean, private val goal : BigGoalModel)
     : Fragment()
-    , View.OnClickListener
     , SQLGoalIndicatorsAdapter.SQLGoalIndicatorsAdapterCallback{
 
-    private var selectedImage : Uri? = null
-    lateinit var dbHelper : DBHelper
-    lateinit var mGoalIndicatorsList : List<GoalIndicatorModel>
-    lateinit var adapter : SQLGoalIndicatorsAdapter
-    lateinit var mGoalIndicatorsListForNewGoal : ArrayList<GoalIndicatorModel>
+    private var _binding : FragmentBigGoalMainBinding? = null
+    // This property is only valid between onCreateView and onDestroyView
+    private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+    private var selectedImage : Uri? = null
+    private lateinit var dbHelper : DBHelper
+    private lateinit var mGoalIndicatorsList : List<GoalIndicatorModel>
+    private lateinit var adapter : SQLGoalIndicatorsAdapter
+    private lateinit var mGoalIndicatorsListForNewGoal : ArrayList<GoalIndicatorModel>
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_big_goal_main, container, false)
+        // Inflate the layout for this fragment
+        _binding = FragmentBigGoalMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         dbHelper = DBHelper(context!!)
-        mGoalIndicatorsList = listOf<GoalIndicatorModel>()
+        mGoalIndicatorsList = listOf()
         adapter = SQLGoalIndicatorsAdapter(mGoalIndicatorsList, this, requireContext())
 
         initializationView()
-        initializationRecyclerView()
 
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     override fun onResume() {
         super.onResume()
-
         refreshRecyclerView()
     }
 
@@ -64,14 +68,8 @@ class BigGoalMainFragment(var isNew : Boolean, val goal : BigGoalModel)
         try {
             if (requestCode == REQUEST_SELECT_IMAGE_IN_ALBUM && resultCode == Activity.RESULT_OK
                 && data != null) {
-
                 selectedImage = data.data
-                Glide.with(this)
-                    .load(selectedImage)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(ivGoal)
-
+                binding.ivGoal.loadImageWithCache(binding.root, selectedImage)
             }
         } catch (e : Exception) {
             e.printStackTrace()
@@ -81,47 +79,86 @@ class BigGoalMainFragment(var isNew : Boolean, val goal : BigGoalModel)
 
     private fun initializationView() {
 
-        ivGoal.setOnClickListener(this)
-        btSave.setOnClickListener(this)
-        btAddIndicator.setOnClickListener(this)
+        binding.run {
 
-        if (!isNew) {
+            rvIndicators.adapter = adapter
 
-            etTitle.setText(goal.title)
-            etDescription.setText(goal.description)
+            ivGoal.setOnClickListener {
+                selectImageInGallery()
+            }
 
-            // To do disabled some elements
-            //etTitle.isEnabled = false
-            //etDescription.isEnabled = false
-            //ivGoal.isEnabled = false
+            btSave.setOnClickListener {
+                goal.title = etTitle.text.toString()
+                goal.description = etDescription.text.toString()
 
-            //btSave.visibility = View.INVISIBLE
-            //etIndicator.visibility = View.INVISIBLE
-            //btAddIndicator.visibility = View.INVISIBLE
+                // save new file
+                if (selectedImage != null) {
+                    goal.imagePath = UUID.randomUUID().toString()
+                    Utils(context?.applicationContext).saveImageToInternalStorage(
+                        selectedImage,
+                        goal.imagePath
+                    )
+                }
 
-            val imageFile =
-                Utils(context?.applicationContext).getImagePathFromInternalStorage(goal.imagePath)
-            if (imageFile.exists())
-                Glide.with(this)
-                    .load(imageFile)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(ivGoal)
+                if (isNew) {
+                    dbHelper.addBigGoal(goal)
 
-        } else {
+                    mGoalIndicatorsListForNewGoal.forEach { goalIndicatorModel ->
+                        goalIndicatorModel.bigGoalId = goal.id
+                        dbHelper.addGoalIndicator(goalIndicatorModel)
+                    }
 
-            mGoalIndicatorsListForNewGoal = ArrayList<GoalIndicatorModel>()
+                } else {
+                    dbHelper.updateBigGoal(goal)
+                }
 
-            //btSave.visibility = View.VISIBLE
-            //etIndicator.visibility = View.VISIBLE
-            //btAddIndicator.visibility = View.VISIBLE
+                isNew = false
+
+                Toast.makeText(context, getString(R.string.info_message_save_goal)
+                    , Toast.LENGTH_SHORT).show()
+            }
+
+            btAddIndicator.setOnClickListener {
+                if(etIndicator.text.isEmpty()) {
+                    Toast.makeText(context, getString(R.string.error_message_empty_indicator)
+                        , Toast.LENGTH_SHORT).show()
+                } else {
+                    val newGoalIndicator =
+                        GoalIndicatorModel()
+                    newGoalIndicator.description = etIndicator.text.toString()
+                    newGoalIndicator.done = 0
+
+                    if (isNew) {
+                        newGoalIndicator.bigGoalId = 0
+                        mGoalIndicatorsListForNewGoal.add(newGoalIndicator)
+                    } else {
+                        newGoalIndicator.bigGoalId = goal.id
+                        dbHelper?.addGoalIndicator(newGoalIndicator)
+                    }
+
+                    etIndicator.text.clear()
+                }
+
+                refreshRecyclerView()
+            }
+
+            if (!isNew) {
+
+                etTitle.setText(goal.title)
+                etDescription.setText(goal.description)
+
+                val imageFile =
+                    Utils(context?.applicationContext).getImagePathFromInternalStorage(goal.imagePath)
+                if (imageFile.exists()) {
+                    ivGoal.loadImageWithCache(root, imageFile.path)
+                }
+
+            } else {
+
+                mGoalIndicatorsListForNewGoal = ArrayList<GoalIndicatorModel>()
+            }
         }
-    }
 
-    private fun initializationRecyclerView() {
-        rvIndicators.layoutManager = LinearLayoutManager(context
-            , LinearLayoutManager.VERTICAL, false)
-        rvIndicators.adapter = adapter
     }
 
     private fun refreshRecyclerView() {
@@ -137,72 +174,7 @@ class BigGoalMainFragment(var isNew : Boolean, val goal : BigGoalModel)
 
     }
 
-    override fun onClick(v: View?) {
-
-           if (v?.id == R.id.ivGoal) {
-               selectImageInGallery()
-           } else if (v?.id == R.id.btSave) {
-
-               goal.title = etTitle.text.toString()
-               goal.description = etDescription.text.toString()
-
-               // save new file
-               if (selectedImage != null) {
-                   goal.imagePath = UUID.randomUUID().toString()
-                   Utils(context?.applicationContext).saveImageToInternalStorage(
-                       selectedImage,
-                       goal.imagePath
-                   )
-               }
-
-               if (isNew) {
-                   dbHelper.addBigGoal(goal)
-
-                   mGoalIndicatorsListForNewGoal.forEach {
-                       it.bigGoalId = goal.id
-                       dbHelper.addGoalIndicator(it)
-                   }
-
-               } else {
-                   dbHelper.updateBigGoal(goal)
-               }
-
-               isNew = false
-
-               Toast.makeText(context, getString(R.string.info_message_save_goal)
-                   , Toast.LENGTH_SHORT).show()
-
-               //finish()
-
-           } else if (v?.id == R.id.btAddIndicator) {
-
-               if(etIndicator.text.isEmpty()) {
-                   Toast.makeText(context, getString(R.string.error_message_empty_indicator)
-                       , Toast.LENGTH_SHORT).show()
-                   return
-               }
-
-               val newGoalIndicator =
-                   GoalIndicatorModel()
-               newGoalIndicator.description = etIndicator.text.toString()
-               newGoalIndicator.done = 0
-
-               if (isNew) {
-                   newGoalIndicator.bigGoalId = 0
-                   mGoalIndicatorsListForNewGoal.add(newGoalIndicator)
-               } else {
-                   newGoalIndicator.bigGoalId = goal.id
-                   dbHelper?.addGoalIndicator(newGoalIndicator)
-               }
-
-               etIndicator.text.clear()
-
-               refreshRecyclerView()
-
-           }
-    }
-
-    fun selectImageInGallery() {
+    private fun selectImageInGallery() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         val packageManager = context?.packageManager
@@ -212,7 +184,6 @@ class BigGoalMainFragment(var isNew : Boolean, val goal : BigGoalModel)
     }
 
     // Interfaces
-
     override fun onCheckClick(pos: Int) {
 
         // unsaved goal
