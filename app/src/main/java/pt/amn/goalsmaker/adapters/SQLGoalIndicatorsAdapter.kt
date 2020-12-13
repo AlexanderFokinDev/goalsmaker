@@ -2,15 +2,13 @@ package pt.amn.goalsmaker.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import pt.amn.goalsmaker.models.GoalIndicatorModel
-import pt.amn.goalsmaker.R
+import pt.amn.goalsmaker.databinding.RowGoalIndicatorBinding
 
 class SQLGoalIndicatorsAdapter(private var mAllGoalIndicators : List<GoalIndicatorModel>
-                               , val listener : SQLGoalIndicatorsAdapterCallback,
+                               , private val listener : SQLGoalIndicatorsAdapterCallback,
                                val context: Context)
     : RecyclerView.Adapter<SQLGoalIndicatorsAdapter.GoalIndicatorsViewHolder> ()
      {
@@ -23,45 +21,38 @@ class SQLGoalIndicatorsAdapter(private var mAllGoalIndicators : List<GoalIndicat
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    class GoalIndicatorsViewHolder(itemView: View, val listener : SQLGoalIndicatorsAdapterCallback)
-        : RecyclerView.ViewHolder(itemView) {
+    class GoalIndicatorsViewHolder(private val binding : RowGoalIndicatorBinding,
+                                   private val listener : SQLGoalIndicatorsAdapterCallback)
+        : RecyclerView.ViewHolder(binding.root) {
 
-        val tvDescription : TextView = itemView.findViewById(R.id.goal_indicators_tv_indicator)
-        val cbDone : CheckBox = itemView.findViewById(R.id.goal_indicators_check)
-        val btDelete : ImageButton = itemView.findViewById(R.id.goal_indicators_delete)
+            fun onBind(goalIndicator : GoalIndicatorModel, position : Int) {
+                binding.run {
+                    tvIndicator.text = goalIndicator.description
 
+                    cbCheck.isChecked = goalIndicator.done.compareTo(0) != 0
+                    cbCheck.setOnCheckedChangeListener { _, _ ->
+                        listener.onCheckClick(position)
+                    }
+
+                    ibDelete.setOnClickListener { listener.onDeleteClick(position) }
+                }
+            }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : GoalIndicatorsViewHolder {
-
-        val v : View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.row_goal_indicator, parent, false)
-
         return GoalIndicatorsViewHolder(
-            v,
+            RowGoalIndicatorBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             listener
         )
-
     }
 
     override fun getItemCount(): Int {
-        return mAllGoalIndicators.count()
+        return mAllGoalIndicators.size
     }
 
     override fun onBindViewHolder(holder: GoalIndicatorsViewHolder, position: Int) {
-
-        val goalIndicator = mAllGoalIndicators.get(position)
-
-        holder.tvDescription.text = goalIndicator.description
-
-        holder.cbDone.isChecked = if(goalIndicator.done.compareTo(0) == 0) false else true
-        holder.cbDone.setOnCheckedChangeListener() {buttonView, isChecked ->
-            listener.onCheckClick(position)
-        }
-
-        holder.btDelete.setOnClickListener() {v: View? ->  listener.onDeleteClick(position)}
-
+        holder.onBind(mAllGoalIndicators[position], position)
     }
 
      fun setItems(list : List<GoalIndicatorModel>) {

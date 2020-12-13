@@ -13,6 +13,7 @@ import pt.amn.goalsmaker.*
 import pt.amn.goalsmaker.adapters.SQLGoalIndicatorsAdapter
 import pt.amn.goalsmaker.databinding.FragmentBigGoalMainBinding
 import pt.amn.goalsmaker.helpers.DBHelper
+import pt.amn.goalsmaker.helpers.Utils
 import pt.amn.goalsmaker.helpers.loadImageWithCache
 import pt.amn.goalsmaker.models.BigGoalModel
 import pt.amn.goalsmaker.models.GoalIndicatorModel

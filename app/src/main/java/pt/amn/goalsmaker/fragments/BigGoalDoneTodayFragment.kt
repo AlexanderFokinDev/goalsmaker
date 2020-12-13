@@ -5,17 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_big_goal_done_today.*
 import pt.amn.goalsmaker.helpers.DBHelper
 import pt.amn.goalsmaker.models.BigGoalModel
-import pt.amn.goalsmaker.R
-import pt.amn.goalsmaker.Utils
+import pt.amn.goalsmaker.helpers.Utils
 import pt.amn.goalsmaker.adapters.SQLTasksDoneTodayAdapter
+import pt.amn.goalsmaker.databinding.FragmentBigGoalDoneTodayBinding
 import pt.amn.goalsmaker.models.CompletedTaskModel
 
-class BigGoalDoneTodayFragment(var isNew : Boolean, val goal : BigGoalModel) : Fragment()
+class BigGoalDoneTodayFragment(var isNew : Boolean, private val goal : BigGoalModel) : Fragment()
     , SQLTasksDoneTodayAdapter.SQLTasksDoneTodayAdapterCallback{
+
+    private var _binding : FragmentBigGoalDoneTodayBinding? = null
+    // This property is only valid between onCreateView and onDestroyView
+    private val binding get() = _binding!!
 
     lateinit var dbHelper : DBHelper
     lateinit var mTasksList : List<CompletedTaskModel>
@@ -26,19 +29,17 @@ class BigGoalDoneTodayFragment(var isNew : Boolean, val goal : BigGoalModel) : F
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view = inflater.inflate(R.layout.fragment_big_goal_done_today
-            , container, false)
-        return view
+        _binding = FragmentBigGoalDoneTodayBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         dbHelper = DBHelper(context!!)
-        mTasksList = listOf<CompletedTaskModel>()
-        adapter = SQLTasksDoneTodayAdapter(mTasksList, this, requireContext())
-
-        initializationRecyclerView()
+        mTasksList = listOf()
+        adapter = SQLTasksDoneTodayAdapter(mTasksList, this)
+        binding.rvCompletedTasks.adapter = adapter
     }
 
     override fun onResume() {
@@ -46,10 +47,9 @@ class BigGoalDoneTodayFragment(var isNew : Boolean, val goal : BigGoalModel) : F
         refreshRecyclerView()
     }
 
-    private fun initializationRecyclerView() {
-        rvCompletedTasks.layoutManager = LinearLayoutManager(context
-            , LinearLayoutManager.VERTICAL, false)
-        rvCompletedTasks.adapter = adapter
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     private fun refreshRecyclerView() {
