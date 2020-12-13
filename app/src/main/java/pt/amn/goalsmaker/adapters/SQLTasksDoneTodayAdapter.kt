@@ -1,21 +1,13 @@
 package pt.amn.goalsmaker.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_big_goal_main.view.*
-import kotlinx.android.synthetic.main.row_done_today.view.*
-import kotlinx.android.synthetic.main.row_task.view.*
-import pt.amn.goalsmaker.R
+import pt.amn.goalsmaker.databinding.RowDoneTodayBinding
 import pt.amn.goalsmaker.models.CompletedTaskModel
-import pt.amn.goalsmaker.models.TaskModel
 
 class SQLTasksDoneTodayAdapter(private var mAllTasks : List<CompletedTaskModel>
-                               , private val listener : SQLTasksDoneTodayAdapterCallback,
-                               val context: Context)
+                               , private val listener : SQLTasksDoneTodayAdapterCallback)
     : RecyclerView.Adapter<SQLTasksDoneTodayAdapter.TasksDoneTodayViewHolder> ()
      {
 
@@ -27,44 +19,34 @@ class SQLTasksDoneTodayAdapter(private var mAllTasks : List<CompletedTaskModel>
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    class TasksDoneTodayViewHolder(itemView: View, val listener : SQLTasksDoneTodayAdapterCallback)
-        : RecyclerView.ViewHolder(itemView) {
+    class TasksDoneTodayViewHolder(private val binding: RowDoneTodayBinding,
+                                   private val listener: SQLTasksDoneTodayAdapterCallback)
+        : RecyclerView.ViewHolder(binding.root) {
 
-        val tvTask : TextView = itemView.tvTask
-        val tvQuantity : TextView = itemView.tvQuantity
-        val tvTotal : TextView = itemView.tvTotal
-        val btSubtract : ImageButton = itemView.btSubtract
-        val btAdd : ImageButton = itemView.btAdd
-
+        fun onBind(task: CompletedTaskModel, position: Int) {
+            binding.run {
+                tvTask.text = task.taskName
+                tvQuantity.text = task.quantity.toString()
+                tvTotal.text = task.points.toString()
+                btSubtract.setOnClickListener() { listener.onSubtractClick(position) }
+                btAdd.setOnClickListener() { listener.onAddClick(position) }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : TasksDoneTodayViewHolder {
-
-        val v : View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.row_done_today, parent, false)
-
         return TasksDoneTodayViewHolder(
-            v,
-            listener
-        )
-
+            RowDoneTodayBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            listener)
     }
 
     override fun getItemCount(): Int {
-        return mAllTasks.count()
+        return mAllTasks.size
     }
 
     override fun onBindViewHolder(holder: TasksDoneTodayViewHolder, position: Int) {
-
-        val task = mAllTasks.get(position)
-
-        holder.tvTask.text = task.taskName
-        holder.tvQuantity.setText(task.quantity.toString())
-        holder.tvTotal.setText(task.points.toString())
-        holder.btSubtract.setOnClickListener() {_ ->  listener.onSubtractClick(position)}
-        holder.btAdd.setOnClickListener() {_ ->  listener.onAddClick(position)}
-
+        holder.onBind(mAllTasks[position], position)
     }
 
      fun setItems(list : List<CompletedTaskModel>) {

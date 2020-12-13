@@ -1,88 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="@dimen/margin_small_2">
 
-    <RelativeLayout
-
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:clickable="true"
-        android:focusable="true"
-        android:orientation="vertical"
-        android:background="@color/colorPrimary">
+        android:focusable="true">
 
         <TextView
             android:id="@+id/tvTask"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/margin_small_2"
             android:fadingEdge="none"
             android:fontFamily="@font/roboto"
             android:gravity="start"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:text=""
+            android:paddingStart="@dimen/padding_small_3"
+            android:paddingEnd="@dimen/padding_small_3"
+            android:textColor="@color/colorWhite"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/colorWhite"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@tools:sample/full_names" />
 
         <ImageButton
             android:id="@+id/btSubtract"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTask"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/margin_small_2"
             android:background="#00FFFFFF"
-            android:src="@drawable/baseline_remove_white_24" />
+            android:src="@drawable/baseline_remove_white_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTask"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/tvQuantity"
-            android:layout_width="64dp"
+            android:layout_width="@dimen/view_width_normal_1"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTask"
-            android:layout_marginHorizontal="10dp"
-            android:layout_toEndOf="@id/btSubtract"
+            android:layout_marginStart="@dimen/margin_small_3"
             android:fadingEdge="none"
             android:fontFamily="@font/roboto"
             android:gravity="center_horizontal"
-            android:text=""
             android:textColor="@color/colorWhite"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/btSubtract"
+            app:layout_constraintTop_toBottomOf="@+id/tvTask"
+            tools:text="0" />
 
         <ImageButton
             android:id="@+id/btAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTask"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/tvQuantity"
+            android:layout_marginStart="@dimen/margin_small_3"
             android:background="#00FFFFFF"
-            android:src="@drawable/baseline_add_white_24" />
+            android:src="@drawable/baseline_add_white_24"
+            app:layout_constraintStart_toEndOf="@+id/tvQuantity"
+            app:layout_constraintTop_toBottomOf="@+id/tvTask"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
             android:id="@+id/tvTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTask"
-            android:layout_alignParentEnd="true"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginHorizontal="@dimen/margin_small_3"
+            android:layout_marginBottom="@dimen/margin_small_2"
             android:fadingEdge="none"
             android:fontFamily="@font/roboto"
             android:gravity="start"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:text=""
+            android:paddingStart="@dimen/padding_small_3"
+            android:paddingEnd="@dimen/padding_small_3"
             android:textColor="@color/colorWhite"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTask"
+            tools:text="0" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

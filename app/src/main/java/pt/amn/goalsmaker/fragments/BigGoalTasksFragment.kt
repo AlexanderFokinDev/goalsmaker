@@ -6,17 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_big_goal_tasks.*
 import pt.amn.goalsmaker.helpers.DBHelper
 import pt.amn.goalsmaker.models.BigGoalModel
 import pt.amn.goalsmaker.R
 import pt.amn.goalsmaker.adapters.SQLGoalTasksAdapter
+import pt.amn.goalsmaker.databinding.FragmentBigGoalTasksBinding
 import pt.amn.goalsmaker.models.TaskModel
 
 class BigGoalTasksFragment(var isNew : Boolean, val goal : BigGoalModel) : Fragment()
-        , View.OnClickListener
         , SQLGoalTasksAdapter.SQLGoalTasksAdapterCallback {
+
+    private var _binding : FragmentBigGoalTasksBinding? = null
+    // This property is only valid between onCreateView and onDestroyView
+    private val binding get() = _binding!!
 
     lateinit var dbHelper : DBHelper
     lateinit var mGoalTasksList : List<TaskModel>
@@ -28,18 +30,18 @@ class BigGoalTasksFragment(var isNew : Boolean, val goal : BigGoalModel) : Fragm
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_big_goal_tasks, container, false)
+        _binding = FragmentBigGoalTasksBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         dbHelper = DBHelper(context!!)
-        mGoalTasksList = listOf<TaskModel>()
-        adapter = SQLGoalTasksAdapter(mGoalTasksList, this, requireContext())
+        mGoalTasksList = listOf()
+        adapter = SQLGoalTasksAdapter(mGoalTasksList, this)
 
         initializationView()
-        initializationRecyclerView()
 
     }
 
@@ -48,19 +50,46 @@ class BigGoalTasksFragment(var isNew : Boolean, val goal : BigGoalModel) : Fragm
         refreshRecyclerView()
     }
 
-    private fun initializationView() {
-
-        btAddTask.setOnClickListener(this)
-
-        if (isNew) {
-            mGoalTasksListForNewGoal = ArrayList<TaskModel>()
-        }
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
-    private fun initializationRecyclerView() {
-        rvTasks.layoutManager = LinearLayoutManager(context
-            , LinearLayoutManager.VERTICAL, false)
-        rvTasks.adapter = adapter
+    private fun initializationView() {
+
+        binding.run {
+
+            rvTasks.adapter = adapter
+
+            btAddTask.setOnClickListener {
+                if (etTask.text.isEmpty()) {
+                    Toast.makeText(
+                        context, getString(R.string.error_message_empty_task), Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    val newTask = TaskModel()
+                    newTask.description = etTask.text.toString()
+                    newTask.point = Integer.parseInt(etPoint.text.toString())
+
+                    if (isNew) {
+                        newTask.bigGoalId = 0
+                        mGoalTasksListForNewGoal.add(newTask)
+                    } else {
+                        newTask.bigGoalId = goal.id
+                        dbHelper.addGoalTask(newTask)
+                    }
+
+                    etTask.text.clear()
+                    etPoint.text.clear()
+
+                    refreshRecyclerView()
+                }
+            }
+        }
+
+        if (isNew) {
+            mGoalTasksListForNewGoal = ArrayList()
+        }
     }
 
     private fun refreshRecyclerView() {
@@ -73,38 +102,6 @@ class BigGoalTasksFragment(var isNew : Boolean, val goal : BigGoalModel) : Fragm
         }
 
         adapter.notifyDataSetChanged()
-
-    }
-
-    override fun onClick(v: View?) {
-
-        if (v?.id == R.id.btAddTask) {
-
-            if(etTask.text.isEmpty()) {
-                Toast.makeText(context, getString(R.string.error_message_empty_task)
-                    , Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            val newTask = TaskModel()
-            newTask.description = etTask.text.toString()
-            newTask.point = Integer.parseInt(etPoint.text.toString())
-
-            if (isNew) {
-                newTask.bigGoalId = 0
-                mGoalTasksListForNewGoal.add(newTask)
-            } else {
-                newTask.bigGoalId = goal.id
-                dbHelper?.addGoalTask(newTask)
-            }
-
-            etTask.text.clear()
-            etPoint.text.clear()
-
-            refreshRecyclerView()
-
-        }
-
     }
 
     override fun onDeleteClick(pos: Int) {
@@ -118,7 +115,6 @@ class BigGoalTasksFragment(var isNew : Boolean, val goal : BigGoalModel) : Fragm
         }
 
         refreshRecyclerView()
-
     }
 
 }

@@ -2,6 +2,8 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,10 +15,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_small_6"
             android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:paddingStart="@dimen/padding_small_6"
+            android:paddingEnd="@dimen/padding_small_6">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,35 +49,37 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="@dimen/view_height_line_1"
             android:background="@color/colorPrimaryDark"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="16dp" />
+            android:layout_marginHorizontal="@dimen/margin_small_2"
+            android:layout_marginTop="@dimen/margin_small_6"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCompletedTasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_small_6"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
         >
 
         </androidx.recyclerview.widget.RecyclerView>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="@dimen/view_height_line_1"
         android:background="@color/colorPrimaryDark"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="16dp" />
+        android:layout_marginHorizontal="@dimen/margin_small_2"
+        android:layout_marginTop="@dimen/margin_small_6" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_small_6"
             android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:paddingStart="@dimen/padding_small_6"
+            android:paddingEnd="@dimen/padding_small_6">
 
             <TextView
                 android:id="@+id/tvTitleTotalPoints"

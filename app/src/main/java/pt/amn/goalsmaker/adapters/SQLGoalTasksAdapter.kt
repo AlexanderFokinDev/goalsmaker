@@ -1,19 +1,13 @@
 package pt.amn.goalsmaker.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_big_goal_main.view.*
-import kotlinx.android.synthetic.main.row_task.view.*
-import pt.amn.goalsmaker.R
+import pt.amn.goalsmaker.databinding.RowTaskBinding
 import pt.amn.goalsmaker.models.TaskModel
 
 class SQLGoalTasksAdapter(private var mAllTasks : List<TaskModel>
-                          , private val listener : SQLGoalTasksAdapterCallback,
-                          val context: Context)
+                          , private val listener : SQLGoalTasksAdapterCallback)
     : RecyclerView.Adapter<SQLGoalTasksAdapter.TasksViewHolder> ()
      {
 
@@ -24,40 +18,32 @@ class SQLGoalTasksAdapter(private var mAllTasks : List<TaskModel>
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    class TasksViewHolder(itemView: View, val listener : SQLGoalTasksAdapterCallback)
-        : RecyclerView.ViewHolder(itemView) {
+    class TasksViewHolder(private val binding: RowTaskBinding,
+                          private val listener : SQLGoalTasksAdapterCallback)
+        : RecyclerView.ViewHolder(binding.root) {
 
-        val tvDescription : TextView = itemView.tvRowDescription
-        val etPoint : EditText = itemView.etRowPoint
-        val btTaskDelete : ImageButton = itemView.btTaskDelete
-
+            fun onBind(task: TaskModel, position: Int) {
+                binding.run {
+                    tvRowDescription.text = task.description
+                    etRowPoint.setText(task.point.toString())
+                    btTaskDelete.setOnClickListener{ listener.onDeleteClick(position) }
+                }
+            }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)
             : TasksViewHolder {
-
-        val v : View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.row_task, parent, false)
-
         return TasksViewHolder(
-            v,
-            listener
-        )
-
+            RowTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            listener)
     }
 
     override fun getItemCount(): Int {
-        return mAllTasks.count()
+        return mAllTasks.size
     }
 
     override fun onBindViewHolder(holder: TasksViewHolder, position: Int) {
-
-        val task = mAllTasks.get(position)
-
-        holder.tvDescription.text = task.description
-        holder.etPoint.setText(task.point.toString())
-        holder.btTaskDelete.setOnClickListener() {v: View? ->  listener.onDeleteClick(position)}
-
+        holder.onBind(mAllTasks[position], position)
     }
 
      fun setItems(list : List<TaskModel>) {

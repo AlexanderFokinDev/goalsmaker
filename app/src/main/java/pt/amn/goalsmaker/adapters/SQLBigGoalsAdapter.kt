@@ -4,12 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import pt.amn.goalsmaker.helpers.DBHelper
 import pt.amn.goalsmaker.models.BigGoalModel
-import pt.amn.goalsmaker.Utils
+import pt.amn.goalsmaker.helpers.Utils
 import pt.amn.goalsmaker.databinding.RowBigGoalBinding
+import pt.amn.goalsmaker.helpers.loadImageWithoutCache
 
 class SQLBigGoalsAdapter (private val listener : SQLBigGoalsAdapterCallback, val context: Context)
     : RecyclerView.Adapter<SQLBigGoalsAdapter.BigGoalsViewHolder> ()
@@ -40,11 +39,7 @@ class SQLBigGoalsAdapter (private val listener : SQLBigGoalsAdapterCallback, val
                         val imageFile = Utils(context.applicationContext)
                             .getImagePathFromInternalStorage(bigGoal.imagePath)
                         if (imageFile.exists()) {
-                            Glide.with(context)
-                                .load(imageFile)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .into(ivBigGoal)
+                            ivBigGoal.loadImageWithoutCache(binding.root, imageFile.path)
                         }
                     }
 

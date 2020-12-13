@@ -1,10 +1,12 @@
 package pt.amn.goalsmaker.models
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-class TaskModel : Serializable {
-    var id : Int = 0
-    var description : String = ""
-    var point : Int = 0
+@Parcelize
+data class TaskModel (
+    var id : Int = 0,
+    var description : String = "",
+    var point : Int = 0,
     var bigGoalId : Int = 0
-}
+) : Parcelable

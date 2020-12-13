@@ -1,10 +1,12 @@
 package pt.amn.goalsmaker.models
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-class BigGoalModel : Serializable {
-    var id : Int = 0
-    var title : String = ""
-    var description : String = ""
+@Parcelize
+data class BigGoalModel (
+    var id : Int = 0,
+    var title : String = "",
+    var description : String = "",
     var imagePath : String = ""
-}
+) : Parcelable

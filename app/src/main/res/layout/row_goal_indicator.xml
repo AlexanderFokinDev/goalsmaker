@@ -1,44 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
-    android:clickable="true"
-    android:orientation="vertical">
+    android:clickable="true">
 
     <TextView
-        android:id="@+id/goal_indicators_tv_indicator"
-        android:layout_width="match_parent"
+        android:id="@+id/tvIndicator"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fadingEdge="none"
         android:fontFamily="@font/roboto"
         android:gravity="start"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:layout_toLeftOf="@id/goal_indicators_check"
-        android:text=""
+        android:paddingStart="@dimen/padding_small_3"
+        android:paddingEnd="@dimen/padding_small_3"
+        tools:text="@tools:sample/full_names"
         android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <ImageButton
-        android:id="@+id/goal_indicators_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
-        android:background="#00FFFFFF"
-        android:src="@drawable/baseline_delete_black_24" />
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cbCheck"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <CheckBox
-        android:id="@+id/goal_indicators_check"
+        android:id="@+id/cbCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginEnd="0dp"
-        android:layout_toStartOf="@id/goal_indicators_delete" />
+        app:layout_constraintEnd_toStartOf="@id/ibDelete"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/ibDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_small_3"
+        android:background="#00FFFFFF"
+        android:src="@drawable/baseline_delete_black_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
